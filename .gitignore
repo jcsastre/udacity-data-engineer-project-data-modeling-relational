@@ -1,3 +1,7 @@
+.ipython/
+.local/
+.bash_history
+.cache/
 .ipynb_checkpoints/
 *.swp
 __pycache__/
