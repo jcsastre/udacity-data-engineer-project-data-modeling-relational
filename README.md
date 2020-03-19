@@ -3,7 +3,7 @@
 ## Introduction
 
 The company Sparkify needs to get insights from the log files based on the users using his app. In this
-case they are interested in analyze what songs users are listening to. Becasue the log data in his current
+case they are interested in analyze what songs users are listening to. Because the log data in his current
 format is not easy to analyze, the need to implement an ETL process to generate one fact table and some dimensional tables. This kind of star schema database is very suitable for analytics purposes.
 
 ## How to run the Python scripts
