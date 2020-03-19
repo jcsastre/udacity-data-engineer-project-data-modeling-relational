@@ -78,8 +78,8 @@ ON CONFLICT (user_id) DO NOTHING;
 """)
 
 song_table_insert = ("""
-INSERT INTO songs (song_id, title, artist_id)
-VALUES (%s, %s, %s)
+INSERT INTO songs (song_id, title, artist_id, year, duration)
+VALUES (%s, %s, %s, %s, %s)
 ON CONFLICT (song_id) DO NOTHING;
 """)
 
@@ -99,13 +99,9 @@ ON CONFLICT (start_time) DO NOTHING;
 # FIND SONGS
 
 song_select = ("""
-SELECT s.song_id, s.artist_id 
-FROM songs as s 
-JOIN artists as a 
-ON s.artist_id = a.artist_id
-WHERE s.title = %s 
-    AND a.name = %s 
-    AND CEIL(s.duration) = CEIL(%s);
+SELECT s.song_id, s.artist_id FROM songs as s 
+JOIN artists as a ON s.artist_id = a.artist_id
+WHERE s.title = %s AND a.name = %s AND s.duration = %s;
 """)
 
 # QUERY LISTS
