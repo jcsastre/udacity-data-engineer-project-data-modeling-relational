@@ -11,11 +11,11 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 songplay_table_create = ("""
 CREATE TABLE songplays (
     songplay_id SERIAL PRIMARY KEY,
-    start_time bigint,
-    user_id int,
+    start_time bigint NOT NULL REFERENCES time(start_time),
+    user_id varchar NOT NULL REFERENCES users(user_id),
     level varchar,
-    song_id varchar,
-    artist_id varchar,
+    song_id varchar REFERENCES songs(song_id),
+    artist_id varchar REFERENCES artists(artist_id),
     session_id int,
     location varchar,
     user_agent varchar
@@ -74,7 +74,7 @@ VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
 user_table_insert = ("""
 INSERT INTO users (user_id, first_name, last_name, gender, level)
 VALUES (%s, %s, %s, %s, %s)
-ON CONFLICT (user_id) DO NOTHING;
+ON CONFLICT (user_id) DO UPDATE SET level=EXCLUDED.level;
 """)
 
 song_table_insert = ("""
@@ -99,12 +99,11 @@ ON CONFLICT (start_time) DO NOTHING;
 # FIND SONGS
 
 song_select = ("""
-SELECT s.song_id, s.artist_id FROM songs as s 
-JOIN artists as a ON s.artist_id = a.artist_id
-WHERE s.title = %s AND a.name = %s AND s.duration = %s;
+SELECT s.song_id, s.artist_id FROM songs as s, artists as a
+WHERE s.artist_id = a.artist_id AND s.title = %s AND a.name = %s AND s.duration = %s;
 """)
 
 # QUERY LISTS
 
-create_table_queries = [songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create]
+create_table_queries = [user_table_create, song_table_create, artist_table_create, time_table_create, songplay_table_create]
 drop_table_queries = [songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
